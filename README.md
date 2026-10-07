@@ -1,14 +1,16 @@
+[中文](README.md) | [English](README.en.md)
+
 <p><img src="frontend/public/brand/logo.jpg" height="48" alt="知华科技"></p>
 
 # 知华科技汽修门店管理 · ZhuaTech AutoCare
 
 **公开源码学习版 · Non-commercial source edition**
 
-一张车辆工单，从接车、维修报价、车主确认到技师派工、配件领退、质检、收款和交车。面向独立汽修门店及软件实施团队的学习评估，提供可运行的前后端源码和中英文界面。商业授权、收费部署及商业二次开发须取得书面授权。
+一张车辆工单，从接车、维修报价、车主确认到技师派工、配件领退、质检、收款和交车。面向独立汽修门店及软件实施团队的学习评估，采用 Java 21、Spring Boot、Vue 3 与 MySQL，提供可运行的前后端源码和中英文界面。商业授权、收费部署及商业二次开发须取得书面授权。
 
 知华科技（上海如静知华信息科技有限公司） · [官网](https://www.zhuatech.cn/) · 微信 `zhuatech` / `zhuatech2`。
 
-English: [Workshop management guide](docs/ENGLISH.md).
+英文主页：[README.en.md](README.en.md)。
 
 ## 一辆车如何走完流程
 
@@ -49,21 +51,35 @@ English: [Workshop management guide](docs/ENGLISH.md).
 
 ## 实际运行截图
 
-以下截图来自运行系统，档案与凭证是虚构学习数据。
+以下截图来自运行系统，档案与凭证是虚构学习数据。登录页提供中英文入口；业务工作台显示维修状态、最近工单和配件预警。
 
 | 登录 | 业务端工作台 |
 | --- | --- |
 | ![登录](docs/screenshots/login.png) | ![业务端首页](docs/screenshots/operator-home.png) |
 
+工单详情展示接车事实、独立报价授权、派工、领退料和逐项完成操作。
+
 ![维修工单、报价与配件](docs/screenshots/job-detail.png)
+
+管理端账号页维护员工、岗位和部门；角色权限页配置注册功能与数据范围，接口独立检查授权。
 
 | 账号管理 | 角色与权限 |
 | --- | --- |
 | ![管理端](docs/screenshots/accounts.png) | ![权限管理](docs/screenshots/permissions.png) |
 
+经营报表按接车日期汇总已质检工单、收款与配件成本，支持 CSV 导出。
+
 ![经营报表](docs/screenshots/reports.png)
 
+车辆历史显示当前账号可查看的历史工单，不向未获授权的技师开放其他派工。
+
 ![车辆维修历史](docs/screenshots/vehicle-history.png)
+
+中英文与窄屏页面使用同一套实际业务界面：
+
+![英文工作台](docs/screenshots/english.png)
+
+![移动端工作台](docs/screenshots/mobile.png)
 
 ## 技术与架构
 
@@ -89,6 +105,7 @@ LICENSE     自有源码非商业许可
 ```sh
 cp .env.example .env
 # 填写 MYSQL_ROOT_PASSWORD、DATABASE_PASSWORD、ADMIN_PASSWORD 三个独立强密码。
+docker compose config --quiet
 docker compose up -d --build --wait
 ```
 
@@ -109,12 +126,16 @@ docker compose up -d --build --wait
 
 系统参数可调整公司名称、时区及两位小数币种；产生任何工单或库存流水后不能切换币种，没有自动换汇。
 
-本地开发须有 Java 21、Maven、Node.js 与独立 MySQL，配置数据库和管理员环境变量：
+本地开发须有 Java 21、Maven 3.9、Node.js 与独立 MySQL，配置数据库和管理员环境变量：
 
 ```sh
 cd backend
 mvn spring-boot:run
-# 另一终端
+```
+
+另一个终端从仓库根目录启动前端：
+
+```sh
 cd frontend
 npm ci
 npm run dev
@@ -129,6 +150,8 @@ npm run dev
 - [架构与接口](docs/ARCHITECTURE.md)：数据、状态、计价与 API 输入说明。
 - [English guide](docs/ENGLISH.md)：installation and workshop workflow.
 - [第三方许可](docs/THIRD_PARTY.md)：依赖的独立版权和许可。
+
+主动重启时，先重启 MySQL 并等待健康，再重启后端并等待健康，最后重启前端，使其代理重新解析后端地址。
 
 升级前备份并验证恢复；后续迁移只新增版本文件，不修改已运行的脚本。Flyway 校验失败时核对日志、版本与备份，不能删除迁移历史或用自动建表绕过。不要对真实业务执行 `down -v`。
 
@@ -166,6 +189,8 @@ python3 scripts/smoke.py
 自有代码使用根目录 [LICENSE](LICENSE)，是非商业公开源码学习版，**不是 OSI 标准开源许可**。第三方依赖保留其版权和许可。
 
 ## 联系知华科技
+
+商业授权或深度定制开发请联系知华科技。
 
 本项目由知华科技（上海如静知华信息科技有限公司）提供公开源码学习版本，主要用于个人学习、技术研究与非商业交流。未经书面授权不得商用。企业信息化建设、中小企业数字化转型、中小企业 AI 转型、私有化部署、软件外包、软件项目外包、软件实施、FDE 外包、OPC 技术支持及深度定制开发，请访问知华科技官网 [https://www.zhuatech.cn/](https://www.zhuatech.cn/)，或添加微信 zhuatech、zhuatech2 咨询。
 
